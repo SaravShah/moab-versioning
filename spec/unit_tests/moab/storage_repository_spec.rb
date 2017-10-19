@@ -76,6 +76,56 @@ describe 'Moab::StorageRepository' do
     expect(storage_repo.object_size('jq937jp0017')).to be_between(345_000, 346_000)
   end
 
+  context '#verify_no_nested_moabs' do
+    let(:path) { 'spec/fixtures/bad_root01/bad_moab_storage_trunk/xx/000/xx/0000/xx000xx0000' }
+    let(:verification_array) { storage_repo.verify_no_nested_moabs(path) }
+
+    it 'returns correct data structure' do
+      expect(storage_repo.verify_no_nested_moabs(path)).to be_kind_of Array
+    end
+    it 'has no items in path under version directory' do
+      # v0001
+      expect(verification_array[0]).to eq(4=>"No items in path")
+    end
+    it 'has no items in path under data directory' do
+      # v0002 ??? b/c v0002/data/metadata
+      expect(verification_array[1]).to eq(4=>"No items in path")
+    end
+    it 'has unexpected directory in path under version directory' do
+      # v0002
+      expect(verification_array[2]).to eq(2=>"Unexpected item in path: extra_dir")
+    end
+    it 'has missing directory in path under data directory' do
+      # v0002
+      expect(verification_array[3]).to eq(1=>"Missing directory: content")
+    end
+    it 'has unexpected file in path under version directory' do
+      # v0003
+      expect(verification_array[4]).to eq(2=>"Unexpected item in path: extra_file.txt")
+    end
+    it 'has unexpected directory in path under data directory' do
+      # v0003
+      expect(verification_array[5]).to eq(2=>"Unexpected item in path: extra_dir")
+    end
+    it 'has missing data directory under version directory' do
+      # v0004
+      expect(verification_array[6]).to eq(1=>"Missing directory: data")
+    end
+    it 'has no items in path' do
+      # v0004
+      expect(verification_array[7]).to eq(4=>"No items in path")
+    end
+    it 'has correct directories in path under version directory' do
+      # v0005
+      expect(verification_array[8]).to eq(3=>"Correct items in path")
+      p verification_array
+    end
+    it 'has unexpected file in path under data directory' do
+      # v0005
+      expect(verification_array[9]).to eq(2=>"Unexpected item in path: extra_file.txt")
+    end
+  end
+
   specify "#store_new_object_version" do
     bag_pathname = double("bag_pathname")
     object_pathname = double("object_pathname")
