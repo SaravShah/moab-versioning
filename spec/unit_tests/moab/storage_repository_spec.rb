@@ -83,46 +83,51 @@ describe 'Moab::StorageRepository' do
     it 'returns correct data structure' do
       expect(storage_repo.verify_no_nested_moabs(path)).to be_kind_of Array
     end
-    it 'has no items in path under version directory' do
-      # v0001
-      expect(verification_array[0]).to eq(4=>"No items in path")
+
+    context 'under version directory' do
+      it 'has no items' do
+        # v0001
+        expect(verification_array[0..1]).to eq([{4=>"No items in path"}, {4=>"No items in path"}])
+      end
+      it 'has unexpected directory' do
+        # v0002
+        expect(verification_array[2]).to eq(2=>"Unexpected item in path: extra_dir")
+      end
+      it 'has unexpected file' do
+        # v0003
+        expect(verification_array[4]).to eq(2=>"Unexpected item in path: extra_file.txt")
+      end
+      it 'has missing data directory' do
+        # v0004
+        expect(verification_array[6]).to eq(1=>"Missing directory: data")
+      end
+      it 'has correct directories' do
+        # v0005
+        expect(verification_array[8]).to eq(3=>"Correct items in path")
+      end
     end
-    it 'has no items in path under data directory' do
-      # v0002 ??? b/c v0002/data/metadata
-      expect(verification_array[1]).to eq(4=>"No items in path")
-    end
-    it 'has unexpected directory in path under version directory' do
-      # v0002
-      expect(verification_array[2]).to eq(2=>"Unexpected item in path: extra_dir")
-    end
-    it 'has missing directory in path under data directory' do
-      # v0002
-      expect(verification_array[3]).to eq(1=>"Missing directory: content")
-    end
-    it 'has unexpected file in path under version directory' do
-      # v0003
-      expect(verification_array[4]).to eq(2=>"Unexpected item in path: extra_file.txt")
-    end
-    it 'has unexpected directory in path under data directory' do
-      # v0003
-      expect(verification_array[5]).to eq(2=>"Unexpected item in path: extra_dir")
-    end
-    it 'has missing data directory under version directory' do
-      # v0004
-      expect(verification_array[6]).to eq(1=>"Missing directory: data")
-    end
-    it 'has no items in path' do
-      # v0004
-      expect(verification_array[7]).to eq(4=>"No items in path")
-    end
-    it 'has correct directories in path under version directory' do
-      # v0005
-      expect(verification_array[8]).to eq(3=>"Correct items in path")
-      p verification_array
-    end
-    it 'has unexpected file in path under data directory' do
-      # v0005
-      expect(verification_array[9]).to eq(2=>"Unexpected item in path: extra_file.txt")
+
+    context 'under data directory' do
+      it 'has missing content directory' do
+        # v0002
+        expect(verification_array[3]).to eq(1=>"Missing directory: content")
+      end
+      it 'has unexpected directory' do
+        # v0003
+        expect(verification_array[5]).to eq(2=>"Unexpected item in path: extra_dir")
+      end
+      it 'has no items' do
+        # v0004
+        expect(verification_array[7]).to eq(4=>"No items in path")
+      end
+      it 'has unexpected file' do
+        # v0005
+        expect(verification_array[9]).to eq(2=>"Unexpected item in path: extra_file.txt")
+      end
+      it 'has correct directories' do
+        # v0007
+        expect(verification_array[13]).to eq(3=>"Correct items in path")
+      end
     end
   end
 
