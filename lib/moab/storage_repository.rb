@@ -22,10 +22,6 @@ module Moab
 
     RESPONSE_CODE_TO_MESSAGES = {
       MISSING_DIR => "Missing directory: %{addl}",
-      # NO_MANIFESTS_DIR => "No manifests directory exists",
-      # NO_DATA_DIR => "No data directory exists",
-      # NO_METADATA_DIR => "No metadata directory exists",
-      # NO_CONTENT_DIR => "No content dir exists",
       EXTRA_DIR_DETECTED => "Unexpected item in path: %{addl}",
       CORRECT_DIR=> "Correct items in path",
       EMPTY => "No items in path"
@@ -132,7 +128,6 @@ module Moab
     end
 
     # @param path [String] The identifier of the path to a digital object
-    # @param include_deposit [Boolean] specifies whether to look in deposit areas for objects in process of initial ingest
     # @return [Array] of hashes which contain error messages for the caller
     def verify_no_nested_moabs(path)
       version_directories = list_sub_dirs(path)
