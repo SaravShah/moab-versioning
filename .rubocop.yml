@@ -44,3 +44,7 @@ Naming/FileName:
 # because it's expensive to care
 Style/StringLiterals:
   Enabled: false
+
+# because annotated tokens didn't work
+Style/FormatStringToken:
+  Enabled: false
