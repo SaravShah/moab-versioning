@@ -125,7 +125,7 @@ describe 'Moab::StorageRepository' do
         expect(verification_array[9]).to eq(2=>"Unexpected item in path: extra_file.txt")
       end
       it 'has correct directories' do
-        # v0007
+        # v0006 and v0007
         expect(verification_array[13]).to eq(3=>"Correct items in path")
       end
     end
